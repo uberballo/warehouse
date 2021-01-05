@@ -4,7 +4,7 @@ import (
 	. "github.com/uberballo/webstore/model"
 )
 
-func MockAvailability() AvailabilityResponse {
+func MockAvailabilityResponse() AvailabilityResponse {
 	return AvailabilityResponse{
 		[]Availability{
 			Availability{

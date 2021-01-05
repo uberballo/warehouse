@@ -4,7 +4,7 @@ import (
 	. "github.com/uberballo/webstore/model"
 )
 
-func MockProducts() ProductResponse {
+func MockProductResponse() ProductResponse {
 	return ProductResponse{
 		[]ProductWithoutStock{
 			ProductWithoutStock{
