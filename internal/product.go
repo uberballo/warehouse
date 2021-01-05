@@ -1,7 +1,10 @@
 package internal
 
-var Id_map = make(map[string]string)
+import (
+	m "github.com/uberballo/webstore/model"
+)
 
-func ReadInStockValue() {
+func ReadInStockValue(availabilityMap map[string]string, products []m.ProductWithoutStock) []m.Product {
 
+	return []m.Product{}
 }

@@ -9,7 +9,7 @@ type AvailabilityResponse struct {
 	Response []Availability
 }
 
-type Product struct {
+type ProductWithoutStock struct {
 	Id           string
 	Type         string
 	Name         string
@@ -18,6 +18,16 @@ type Product struct {
 	Manufacturer string
 }
 
+type Product struct {
+	Id           string
+	Type         string
+	Name         string
+	Color        []string
+	Price        int
+	Manufacturer string
+	Stock        string
+}
+
 type ProductResponse struct {
-	Response []Product
+	Response []ProductWithoutStock
 }

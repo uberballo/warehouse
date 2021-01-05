@@ -6,8 +6,8 @@ import (
 
 func MockProducts() ProductResponse {
 	return ProductResponse{
-		[]Product{
-			Product{
+		[]ProductWithoutStock{
+			ProductWithoutStock{
 				Id:           "ae8c8ad79a3e4a554d6f2",
 				Type:         "beanies",
 				Name:         "SOPREV STAR",
@@ -15,7 +15,7 @@ func MockProducts() ProductResponse {
 				Price:        55,
 				Manufacturer: "umpante",
 			},
-			Product{
+			ProductWithoutStock{
 				Id:           "3af7caee9be9365e49e93576",
 				Type:         "beanies",
 				Name:         "STAR EARTH",
@@ -23,7 +23,7 @@ func MockProducts() ProductResponse {
 				Price:        80,
 				Manufacturer: "ippal",
 			},
-			Product{
+			ProductWithoutStock{
 				Id:           "BadID123",
 				Type:         "beanies",
 				Name:         "STAR EARTH",
