@@ -44,8 +44,8 @@ func getCorrectProducts() []Product {
 
 func getCorrectAvailabilityMap() map[string]string {
 	correctAvailabilityMap := map[string]string{
-		"ae8c8ad79a3e4a554d6f2":    "INSTOCK",
-		"3af7caee9be9365e49e93576": "OUTOFSTOCK",
+		"ae8c8ad79a3e4a554d6f2":    "OUTOFSTOCK",
+		"3af7caee9be9365e49e93576": "INSTOCK",
 		"testerid123":              "LESSTHAN10",
 	}
 	return correctAvailabilityMap

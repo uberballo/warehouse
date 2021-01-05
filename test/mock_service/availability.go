@@ -16,8 +16,8 @@ func MockAvailabilityResponse() AvailabilityResponse {
 				Datapayload: "<AVAILABILITY> <CODE>200</CODE> <INSTOCKVALUE>OUTOFSTOCK</INSTOCKVALUE> </AVAILABILITY>",
 			},
 			Availability{
-				Id:          "None",
-				Datapayload: "<AVAILABILITY> <CODE>200</CODE> <INSTOCKVALUE>INSTOCK</INSTOCKVALUE> </AVAILABILITY>",
+				Id:          "testerid123",
+				Datapayload: "<AVAILABILITY> <CODE>200</CODE> <INSTOCKVALUE>LESSTHAN10</INSTOCKVALUE> </AVAILABILITY>",
 			},
 		},
 	}
