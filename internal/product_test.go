@@ -12,31 +12,35 @@ import (
 func getCorrectProducts() []Product {
 	var correctProducts = []Product{
 		Product{
-			Id:           "ae8c8ad79a3e4a554d6f2",
-			Type:         "beanies",
-			Name:         "SOPREV STAR",
-			Color:        []string{"purple"},
-			Price:        55,
-			Manufacturer: "umpante",
-			Stock:        "INSTOCK",
+			ProductWithoutStock: ProductWithoutStock{
+				Id:           "ae8c8ad79a3e4a554d6f2",
+				Type:         "beanies",
+				Name:         "SOPREV STAR",
+				Color:        []string{"purple"},
+				Price:        55,
+				Manufacturer: "umpante",
+			},
+			Stock: "OUTOFSTOCK",
 		},
 		Product{
-			Id:           "3af7caee9be9365e49e93576",
-			Type:         "beanies",
-			Name:         "STAR EARTH",
-			Color:        []string{"green"},
-			Price:        80,
-			Manufacturer: "ippal",
-			Stock:        "OUTOFSTOCK",
+			ProductWithoutStock: ProductWithoutStock{
+				Id:           "3af7caee9be9365e49e93576",
+				Type:         "beanies",
+				Name:         "STAR EARTH",
+				Color:        []string{"green"},
+				Price:        80,
+				Manufacturer: "ippal"},
+			Stock: "INSTOCK",
 		},
 		Product{
-			Id:           "BadID123",
-			Type:         "beanies",
-			Name:         "STAR EARTH",
-			Color:        []string{"green"},
-			Price:        80,
-			Manufacturer: "jeppal",
-			Stock:        "",
+			ProductWithoutStock: ProductWithoutStock{
+				Id:           "BadID123",
+				Type:         "beanies",
+				Name:         "STAR EARTH",
+				Color:        []string{"green"},
+				Price:        80,
+				Manufacturer: "jeppal"},
+			Stock: "",
 		},
 	}
 	return correctProducts

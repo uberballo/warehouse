@@ -5,7 +5,23 @@ import (
 	"strings"
 
 	m "github.com/uberballo/webstore/model"
+	"github.com/uberballo/webstore/test/mock_service"
 )
+
+var availabilityMap map[string]string
+
+func init() {
+	setAvailabilityMapTemp()
+}
+
+func getAvailabilityMap() map[string]string {
+	return availabilityMap
+}
+
+func setAvailabilityMapTemp() {
+	availabilityResponse := mock_service.MockAvailabilityResponse()
+	availabilityMap = createAvailabilityMap(availabilityResponse.Response)
+}
 
 func getInStockValue(payload string) string {
 	expression := "<INSTOCKVALUE>(.+)?</INSTOCKVALUE>"
@@ -24,6 +40,14 @@ func createAvailabilityMap(Availabilities []m.Availability) map[string]string {
 }
 
 func ReadInStockValue(availabilityMap map[string]string, products []m.ProductWithoutStock) []m.Product {
-
-	return []m.Product{}
+	result := []m.Product{}
+	for _, product := range products {
+		stockInValue := availabilityMap[product.Id]
+		productWithStock := m.Product{
+			ProductWithoutStock: product,
+			Stock:               stockInValue,
+		}
+		result = append(result, productWithStock)
+	}
+	return result
 }

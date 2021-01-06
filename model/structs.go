@@ -19,13 +19,8 @@ type ProductWithoutStock struct {
 }
 
 type Product struct {
-	Id           string
-	Type         string
-	Name         string
-	Color        []string
-	Price        int
-	Manufacturer string
-	Stock        string
+	Stock string
+	ProductWithoutStock
 }
 
 type ProductResponse struct {
