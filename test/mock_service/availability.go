@@ -6,7 +6,7 @@ import (
 
 func MockAvailabilityResponse() AvailabilityResponse {
 	return AvailabilityResponse{
-		[]Availability{
+		Response: []Availability{
 			Availability{
 				Id:          "3AF7CAEE9BE9365E49E93576",
 				Datapayload: "<AVAILABILITY> <CODE>200</CODE> <INSTOCKVALUE>INSTOCK</INSTOCKVALUE> </AVAILABILITY>",

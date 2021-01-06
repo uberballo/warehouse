@@ -1,4 +1,4 @@
-package itemservice
+package badapi
 
 import (
 	"encoding/json"
@@ -63,7 +63,9 @@ RETRY:
 				goto RETRY
 			}
 		}
-		ch <- ProductResponse{Response: products}
+		ch <- ProductResponse{
+			Category: category,
+			Response: products}
 	}
 }
 
@@ -82,11 +84,11 @@ func getProductsWithoutStock(categories []string) []ProductResponse {
 	return result
 }
 
-func getAvailability(manufacturers map[string]bool) []AvailabilityResponse {
+func getAvailability(manufacturers []string) []AvailabilityResponse {
 	availabilityChannel := make(chan AvailabilityResponse)
 	var result []AvailabilityResponse
 
-	for manu := range manufacturers {
+	for _, manu := range manufacturers {
 		fmt.Println(manu, len(manu))
 		go fetchAvailability(manu, availabilityChannel)
 	}
@@ -109,11 +111,19 @@ func createManufacturersSet(products []ProductResponse) map[string]bool {
 	return manufacturers
 }
 
+func createSliceOfManufacturers(m map[string]bool) []string {
+	result := []string{}
+	for manufacturer := range m {
+		result = append(result, manufacturer)
+	}
+	return result
+}
+
 func GetProductsAndAvailability(categories []string) ([]ProductResponse, []AvailabilityResponse) {
 	start := time.Now()
 
 	productResponse := getProductsWithoutStock(categories)
-	manufacturers := createManufacturersSet(productResponse)
+	manufacturers := createSliceOfManufacturers(createManufacturersSet(productResponse))
 	availabilityResponse := getAvailability(manufacturers)
 
 	time.Sleep(30 * time.Second)

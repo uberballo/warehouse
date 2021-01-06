@@ -6,7 +6,8 @@ import (
 
 func MockProductResponse() ProductResponse {
 	return ProductResponse{
-		[]ProductWithoutStock{
+		Category: "beanies",
+		Response: []ProductWithoutStock{
 			ProductWithoutStock{
 				Id:           "ae8c8ad79a3e4a554d6f2",
 				Type:         "beanies",

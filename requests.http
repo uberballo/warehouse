@@ -1,0 +1,6 @@
+GET http://localhost:5000/api/products/beanies HTTP/1.1
+###
+GET http://localhost:5000/api/products/facemasks HTTP/1.1
+###
+GET http://localhost:5000/api/products/gloves HTTP/1.1
+###

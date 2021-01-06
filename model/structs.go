@@ -24,5 +24,6 @@ type Product struct {
 }
 
 type ProductResponse struct {
+	Category string
 	Response []ProductWithoutStock
 }

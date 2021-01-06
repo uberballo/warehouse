@@ -14,7 +14,7 @@ func Routes(router *gin.Engine) {
 	api := router.Group("/api")
 	{
 		api.GET("/", helloWorld)
-		api.GET("/products", v1.GetProducts)
+		api.GET("/products/:category", v1.GetProducts)
 	}
 }
 

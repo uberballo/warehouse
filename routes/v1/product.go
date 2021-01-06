@@ -1,17 +1,20 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/uberballo/webstore/services/product"
+
 	"github.com/gin-gonic/gin"
-	"github.com/uberballo/webstore/services/itemservice"
 )
 
 func GetProducts(c *gin.Context) {
-	categories := []string{"beanies", "gloves", "masks"}
-	products := itemservice.GetProductsWithStock(categories)
+	category := c.Param("category")
+	fmt.Println(category)
+	data := product.GetProductsWithStock(category)
 	c.JSON(http.StatusOK, gin.H{
 		"status": 200,
-		"data":   products,
+		"data":   data,
 	})
 }
