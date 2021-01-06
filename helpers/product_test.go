@@ -1,4 +1,4 @@
-package internal
+package helpers
 
 import (
 	"reflect"
@@ -68,7 +68,7 @@ func TestAvailability(t *testing.T) {
 	productResponse := mock_service.MockProductResponse().Response
 	want := getCorrectProducts()
 	availabilityMap := getCorrectAvailabilityMap()
-	got := ReadInStockValue(availabilityMap, productResponse)
+	got := createProductsWithAvailability(availabilityMap, productResponse)
 
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("got %v want %v", got, want)

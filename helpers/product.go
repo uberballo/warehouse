@@ -1,4 +1,4 @@
-package internal
+package helpers
 
 import (
 	"regexp"
@@ -39,7 +39,7 @@ func createAvailabilityMap(Availabilities []m.Availability) map[string]string {
 	return result
 }
 
-func ReadInStockValue(availabilityMap map[string]string, products []m.ProductWithoutStock) []m.Product {
+func createProductsWithAvailability(availabilityMap map[string]string, products []m.ProductWithoutStock) []m.Product {
 	result := []m.Product{}
 	for _, product := range products {
 		stockInValue := availabilityMap[product.Id]
@@ -50,4 +50,10 @@ func ReadInStockValue(availabilityMap map[string]string, products []m.ProductWit
 		result = append(result, productWithStock)
 	}
 	return result
+}
+
+func UpdateProductsWithAvailability(productResponse m.ProductResponse, availabilityResponse m.AvailabilityResponse) []m.Product {
+	availabilityMap := createAvailabilityMap(availabilityResponse.Response)
+	products := createProductsWithAvailability(availabilityMap, productResponse.Response)
+	return products
 }
