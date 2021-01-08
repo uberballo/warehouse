@@ -14,7 +14,7 @@ var categories = []string{"gloves", "beanies", "facemasks"}
 
 func checkProducts() {
 	if len(products) == 0 {
-		initializeProductData()
+		InitializeProductData()
 	}
 }
 
@@ -23,7 +23,7 @@ func getCategorysProducts(category string) []m.Product {
 	return products[category]
 }
 
-func initializeProductData() {
+func InitializeProductData() {
 	productResponses, availabilityResponses := badapi.GetProductsAndAvailability(categories)
 	ar := m.CombinAvailabilityResponses(availabilityResponses)
 	for _, response := range productResponses {
@@ -34,8 +34,9 @@ func initializeProductData() {
 
 func init() {
 	fmt.Println("Updating")
-	initializeProductData()
+	InitializeProductData()
 	fmt.Println("done!")
+
 }
 
 func GetProductsWithStock(category string) []m.Product {

@@ -1,40 +1,32 @@
 import './App.css';
-import getProducts from './services/productService';
-import { useEffect, useState } from 'react';
-import useSWR from 'swr';
+import {
+    BrowserRouter as Router,
+    Redirect,
+    Route,
+    Switch,
+  } from 'react-router-dom'
+import Container from './components/Container'
 
 const App = () => {
-    const [products, setProducts] = useState([]);
 
-    useEffect(() => {
-        const fetch = async () => {
-            const res = await getProducts('gloves');
-            console.log(res);
-            setProducts(res);
-        };
-        fetch();
-    }, []);
-
-    const ProductCard = ({ pro }) => {
-        return (
-            <div className='Product'>
-                <p> {pro.Name} </p>
-                <p> {pro.Stock} </p>
-            </div>
-        );
-    };
-
-    const productRow = () => {
-        if (products) {
-            return products?.map((pro) => <ProductCard pro={pro} />);
-        }
-    };
     return (
+        
         <div className='App'>
             <div className='Navbar'>
-                <a href='/facemasks'>masks</a>
+                <a href='/facemasks'>face masks</a>
+                <a href='/gloves'>gloves</a>
+                <a href='/beanies'>beanies</a>
             </div>
-            <div className='Container'>{productRow()}</div>
+            <Router>
+                <Switch>
+                    <Route path="/:category">
+                        <Container />
+                    </Route>
+                </Switch>
+                <Route exact path="/">
+                    <Redirect to="/facemasks"/>
+                </Route>
+            </Router>
         </div>
     );
 };

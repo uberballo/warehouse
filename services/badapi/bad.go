@@ -10,9 +10,14 @@ import (
 	. "github.com/uberballo/webstore/model"
 )
 
+type Response struct {
+	err    error
+	Result interface{}
+}
+
 var baseURL = "https://bad-api-assignment.reaktor.com/v2/"
 
-func fetchAvailability(manufacturer string, ch chan<- AvailabilityResponse) {
+func fetchAvailability(manufacturer string, ch chan<- Response) {
 	retryCount := 0
 RETRY:
 	for {
@@ -31,16 +36,22 @@ RETRY:
 				fmt.Println(err)
 				retryCount++
 				if retryCount > 3 {
-					ch <- AvailabilityResponse{}
+
+					ch <- Response{
+						err:    fmt.Errorf("Failed to fetch %s availability", manufacturer),
+						Result: nil,
+					}
 				}
 				goto RETRY
 			}
-			ch <- availability
+			ch <- Response{
+				err:    nil,
+				Result: availability}
 		}
 	}
 }
 
-func fetchProducts(category string, ch chan<- ProductResponse) {
+func fetchProducts(category string, ch chan<- Response) {
 	retryCount := 0
 RETRY:
 	for {
@@ -58,19 +69,24 @@ RETRY:
 			if err != nil {
 				retryCount++
 				if retryCount > 3 {
-					ch <- ProductResponse{}
+					ch <- Response{
+						err:    fmt.Errorf("Failed to fetch %s catalog ", category),
+						Result: nil,
+					}
 				}
 				goto RETRY
 			}
 		}
-		ch <- ProductResponse{
-			Category: category,
-			Response: products}
+		ch <- Response{
+			err: nil,
+			Result: ProductResponse{
+				Category: category,
+				Response: products}}
 	}
 }
 
 func getProductsWithoutStock(categories []string) []ProductResponse {
-	productChannel := make(chan ProductResponse)
+	productChannel := make(chan Response)
 	var result []ProductResponse
 
 	for _, item := range categories {
@@ -78,14 +94,15 @@ func getProductsWithoutStock(categories []string) []ProductResponse {
 	}
 
 	for range categories {
-		result = append(result, <-productChannel)
+		res := <-productChannel
+		result = append(result, res.Result.(ProductResponse))
 	}
 
 	return result
 }
 
 func getAvailability(manufacturers []string) []AvailabilityResponse {
-	availabilityChannel := make(chan AvailabilityResponse)
+	availabilityChannel := make(chan Response)
 	var result []AvailabilityResponse
 
 	for _, manu := range manufacturers {
@@ -95,7 +112,10 @@ func getAvailability(manufacturers []string) []AvailabilityResponse {
 
 	for range manufacturers {
 		res := <-availabilityChannel
-		result = append(result, res)
+		if res.err != nil {
+			fmt.Println(res.err)
+		}
+		result = append(result, res.Result.(AvailabilityResponse))
 	}
 
 	return result
@@ -126,7 +146,6 @@ func GetProductsAndAvailability(categories []string) ([]ProductResponse, []Avail
 	manufacturers := createSliceOfManufacturers(createManufacturersSet(productResponse))
 	availabilityResponse := getAvailability(manufacturers)
 
-	time.Sleep(30 * time.Second)
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
 	return productResponse, availabilityResponse
 }
