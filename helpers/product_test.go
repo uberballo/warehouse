@@ -116,5 +116,20 @@ func TestProductSorting(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("got %v want %v", got, want)
 	}
+}
 
+func TestGetInStockValue(t *testing.T) {
+	payload := "<AVAILABILITY> <CODE>200</CODE> <INSTOCKVALUE>OUTOFSTOCK</INSTOCKVALUE> </AVAILABILITY>"
+	want := "OUTOFSTOCK"
+	t.Run(payload, testGetInStockValueFunc(payload, want))
+	t.Run("", testGetInStockValueFunc("nothing", ""))
+}
+
+func testGetInStockValueFunc(payload, want string) func(*testing.T) {
+	return func(t *testing.T) {
+		got := getInStockValue(payload)
+		if got != want {
+			t.Errorf("got %v want %v", got, want)
+		}
+	}
 }
