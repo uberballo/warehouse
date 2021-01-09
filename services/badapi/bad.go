@@ -17,72 +17,85 @@ type Response struct {
 
 var baseURL = "https://bad-api-assignment.reaktor.com/v2/"
 
+func createURL(baseURL, firstSuffix, secondSuffix string) string {
+	result := fmt.Sprintf("%s%s/%s", baseURL, firstSuffix, secondSuffix)
+	return result
+}
+
 func fetchAvailability(manufacturer string, ch chan<- Response) {
 	retryCount := 0
-RETRY:
-	for {
-		url := fmt.Sprintf("%savailability/%s", baseURL, manufacturer)
-		resp, err := http.Get(url)
+	url := createURL(baseURL, "availability", manufacturer)
+	resp, err := http.Get(url)
 
-		if err != nil {
-			log.Panic(err)
-		}
-		defer resp.Body.Close()
-
-		var availability AvailabilityResponse
-		if resp.StatusCode == http.StatusOK {
-			err := json.NewDecoder(resp.Body).Decode(&availability)
-			if err != nil || len(availability.Response) == 0 {
-				fmt.Println(err)
-				retryCount++
-				if retryCount > 3 {
-
-					ch <- Response{
-						err:    fmt.Errorf("Failed to fetch %s availability", manufacturer),
-						Result: nil,
-					}
-				}
-				goto RETRY
-			}
-			ch <- Response{
-				err:    nil,
-				Result: availability}
-		}
+	if err != nil {
+		log.Panic(err)
 	}
+	defer resp.Body.Close()
+
+	var availability AvailabilityResponse
+	if resp.StatusCode == http.StatusOK {
+		err := json.NewDecoder(resp.Body).Decode(&availability)
+		if err != nil || len(availability.Response) == 0 {
+			retryCount++
+			if retryCount > 5 {
+				fmt.Println(err)
+				ch <- Response{
+					err:    fmt.Errorf("Failed to fetch %s availability", manufacturer),
+					Result: nil,
+				}
+			}
+			go fetchAvailability(manufacturer, ch)
+		}
+
+		ch <- Response{
+			err:    nil,
+			Result: availability}
+	}
+
+}
+
+func handleProductResponse(resp http.Response) ([]ProductWithoutStock, error) {
+	var products []ProductWithoutStock
+	if resp.StatusCode == http.StatusOK {
+		err := json.NewDecoder(resp.Body).Decode(&products)
+		if err != nil {
+			return nil, err
+		}
+		return products, nil
+	}
+	return nil, fmt.Errorf("Received status code %d", resp.StatusCode)
 }
 
 func fetchProducts(category string, ch chan<- Response) {
 	retryCount := 0
-RETRY:
-	for {
-		url := fmt.Sprintf("%sproducts/%s", baseURL, category)
-		resp, err := http.Get(url)
+	url := createURL(baseURL, "products", category)
 
-		if err != nil {
-			log.Panic(err)
-		}
-		defer resp.Body.Close()
+	resp, err := http.Get(url)
 
-		var products []ProductWithoutStock
-		if resp.StatusCode == http.StatusOK {
-			err := json.NewDecoder(resp.Body).Decode(&products)
-			if err != nil {
-				retryCount++
-				if retryCount > 3 {
-					ch <- Response{
-						err:    fmt.Errorf("Failed to fetch %s catalog ", category),
-						Result: nil,
-					}
-				}
-				goto RETRY
+	if err != nil {
+		log.Panic(err)
+	}
+	defer resp.Body.Close()
+
+	products, err := handleProductResponse(*resp)
+	if err != nil {
+		retryCount++
+		if retryCount > 3 {
+			ch <- Response{
+				err:    fmt.Errorf("Failed to fetch %s catalog ", category),
+				Result: nil,
 			}
 		}
+		go fetchProducts(category, ch)
+	} else {
+
 		ch <- Response{
 			err: nil,
 			Result: ProductResponse{
 				Category: category,
 				Response: products}}
 	}
+
 }
 
 func getProductsWithoutStock(categories []string) []ProductResponse {

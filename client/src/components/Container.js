@@ -1,8 +1,9 @@
 import React,{ useState, useEffect, forwardRef} from 'react'
 import getProducts from '../services/productService';
 import { useParams } from 'react-router-dom'
-import {AutoSizer, List} from 'react-virtualized';
 import { FixedSizeGrid as Grid } from 'react-window';
+import AutoSizer from "react-virtualized-auto-sizer";
+
 
 
 
@@ -45,7 +46,13 @@ function rowRenderer({key, index, style}) {
   const GUTTER_SIZE = 50;
 
   const rows = 5
-  const Cell = ({ columnIndex, rowIndex, style }) => {
+  const tCell = (props) => {
+      console.log(props)
+        return <div >
+            Loading...
+        </div>
+  }
+  const Cell = ({ columnIndex, rowIndex, style}) => {
       const i = rows*rowIndex + columnIndex
       //<ProductCard pro={products[i]}/>
       const pro = products[i]
@@ -63,6 +70,7 @@ function rowRenderer({key, index, style}) {
       }
     }>
                 <p> {pro.Name} </p>
+                <p> {pro.Manufacturer} </p>
                 <p> {pro.Stock} </p>
     </div>)}else{
         return <div style={style}>
@@ -90,19 +98,23 @@ function rowRenderer({key, index, style}) {
   
  return(
 
-            <div className='Container'>
+            <div className='Container' style={{ flex: '1 1 auto' , height: '100vh'}} >
+                 <AutoSizer>
+    {({ height, width }) => (
     <Grid
-    columnCount={5}
+    columnCount={width/250}
     columnWidth={250}
-    height={500}
+    height={height}
         innerElementType={innerElementType}
 
     rowCount={100}
     rowHeight={100}
-    width={1000}
+    width={width}
   >
     {Cell}
   </Grid>
+    )}
+    </AutoSizer>
   </div>
     )
 }

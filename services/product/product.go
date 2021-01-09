@@ -34,7 +34,7 @@ func InitializeProductData() {
 
 func init() {
 	fmt.Println("Updating")
-	InitializeProductData()
+	//InitializeProductData()
 	fmt.Println("done!")
 
 }

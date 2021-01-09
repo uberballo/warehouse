@@ -4,3 +4,11 @@ GET http://localhost:5000/api/products/facemasks HTTP/1.1
 ###
 GET http://localhost:5000/api/products/gloves HTTP/1.1
 ###
+###
+GET https://bad-api-assignment.reaktor.com/v2/products/gloves
+x-force-error-mode: all
+###
+GET https://bad-api-assignment.reaktor.com/v2/availability/umpante
+x-force-error-mode: all
+###
+GET https://bad-api-assignment.reaktor.com/v2/availability/okkau
