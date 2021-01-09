@@ -30,6 +30,11 @@ func InitializeProductData() {
 	}
 }
 
+func init() {
+	//InitializeProductData()
+
+}
+
 func GetProductsWithStock(category string) []m.Product {
 	products := getCategorysProducts(category)
 	sort.Sort(m.ByName(products))

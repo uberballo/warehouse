@@ -14,7 +14,8 @@ const Container = () => {
   const ROW_WIDTH = 250;
   const ROW_HEIGHT = 100;
   const COLUMN_COUNT = Math.floor((windowSize.width / ROW_WIDTH));
-    console.log("count",COLUMN_COUNT)
+  const ROW_COUNT = Math.ceil(products.length/COLUMN_COUNT)
+
 
   useEffect(() => {
     const fetch = async () => {
@@ -79,7 +80,7 @@ const Container = () => {
             columnWidth={ROW_WIDTH}
             height={height}
             innerElementType={innerElementType}
-            rowCount={200}
+            rowCount={ROW_COUNT}
             rowHeight={ROW_HEIGHT}
             width={width}
           >
