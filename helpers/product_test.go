@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"reflect"
+	"sort"
 	"testing"
 
 	"github.com/uberballo/webstore/test/mock_service"
@@ -73,4 +74,47 @@ func TestAvailability(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("got %v want %v", got, want)
 	}
+}
+
+func TestProductSorting(t *testing.T) {
+	var got = []Product{
+		Product{
+			ProductWithoutStock: ProductWithoutStock{
+				Id:           "3af7caee9be9365e49e93576",
+				Type:         "beanies",
+				Name:         "STAR EARTH",
+				Color:        []string{"green"},
+				Price:        80,
+				Manufacturer: "ippal"},
+			Stock: "INSTOCK",
+		},
+		Product{
+			ProductWithoutStock: ProductWithoutStock{
+				Id:           "ae8c8ad79a3e4a554d6f2",
+				Type:         "beanies",
+				Name:         "SOPREV STAR",
+				Color:        []string{"purple"},
+				Price:        55,
+				Manufacturer: "umpante",
+			},
+			Stock: "OUTOFSTOCK",
+		},
+		Product{
+			ProductWithoutStock: ProductWithoutStock{
+				Id:           "BadID123",
+				Type:         "beanies",
+				Name:         "STAR EARTH",
+				Color:        []string{"green"},
+				Price:        80,
+				Manufacturer: "jeppal"},
+			Stock: "",
+		},
+	}
+
+	sort.Sort(ByName(got))
+	want := getCorrectProducts()
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %v want %v", got, want)
+	}
+
 }

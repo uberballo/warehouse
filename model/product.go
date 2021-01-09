@@ -15,3 +15,7 @@ func CombinAvailabilityResponses(availabilityResponse []AvailabilityResponse) Av
 	}
 	return AvailabilityResponse{Response: responses}
 }
+
+func (p ByName) Len() int           { return len(p) }
+func (p ByName) Less(i, j int) bool { return p[i].Name < p[j].Name }
+func (p ByName) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }

@@ -2,7 +2,8 @@ package v1
 
 import (
 	"fmt"
-	"net/http"
+
+	"github.com/uberballo/webstore/helpers/apihelper"
 
 	service "github.com/uberballo/webstore/services/product"
 
@@ -13,8 +14,6 @@ func GetProducts(c *gin.Context) {
 	category := c.Param("category")
 	fmt.Println(category)
 	data := service.GetProductsWithStock(category)
-	c.JSON(http.StatusOK, gin.H{
-		"status": 200,
-		"data":   data,
-	})
+
+	apihelper.Respond(c.Writer, data)
 }

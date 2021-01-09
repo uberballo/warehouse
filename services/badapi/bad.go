@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/uberballo/webstore/helpers/apihelper"
 	. "github.com/uberballo/webstore/model"
 )
 
@@ -16,11 +17,6 @@ type Response struct {
 }
 
 var baseURL = "https://bad-api-assignment.reaktor.com/v2/"
-
-func createURL(baseURL, firstSuffix, secondSuffix string) string {
-	result := fmt.Sprintf("%s%s/%s", baseURL, firstSuffix, secondSuffix)
-	return result
-}
 
 func handleAvailabilityResponse(resp http.Response) (*AvailabilityResponse, error) {
 	var availability AvailabilityResponse
@@ -36,7 +32,7 @@ func handleAvailabilityResponse(resp http.Response) (*AvailabilityResponse, erro
 
 func fetchAvailability(manufacturer string, ch chan<- Response) {
 	retryCount := 0
-	url := createURL(baseURL, "availability", manufacturer)
+	url := apihelper.CreateURL(baseURL, "availability", manufacturer)
 	resp, err := http.Get(url)
 
 	if err != nil {
@@ -79,7 +75,7 @@ func handleProductResponse(resp http.Response) ([]ProductWithoutStock, error) {
 
 func fetchProducts(category string, ch chan<- Response) {
 	retryCount := 0
-	url := createURL(baseURL, "products", category)
+	url := apihelper.CreateURL(baseURL, "products", category)
 
 	resp, err := http.Get(url)
 

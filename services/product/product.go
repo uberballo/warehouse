@@ -1,7 +1,7 @@
 package product
 
 import (
-	"fmt"
+	"sort"
 
 	"github.com/uberballo/webstore/helpers"
 	m "github.com/uberballo/webstore/model"
@@ -9,7 +9,6 @@ import (
 )
 
 var products = make(map[string][]m.Product)
-var Availability []m.Availability
 var categories = []string{"gloves", "beanies", "facemasks"}
 
 func checkProducts() {
@@ -19,7 +18,6 @@ func checkProducts() {
 }
 
 func getCategorysProducts(category string) []m.Product {
-	//checkProducts()
 	return products[category]
 }
 
@@ -32,13 +30,8 @@ func InitializeProductData() {
 	}
 }
 
-func init() {
-	fmt.Println("Updating")
-	//InitializeProductData()
-	fmt.Println("done!")
-
-}
-
 func GetProductsWithStock(category string) []m.Product {
-	return getCategorysProducts(category)
+	products := getCategorysProducts(category)
+	sort.Sort(m.ByName(products))
+	return products
 }
