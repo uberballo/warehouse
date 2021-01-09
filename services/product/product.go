@@ -19,7 +19,7 @@ func checkProducts() {
 }
 
 func getCategorysProducts(category string) []m.Product {
-	checkProducts()
+	//checkProducts()
 	return products[category]
 }
 

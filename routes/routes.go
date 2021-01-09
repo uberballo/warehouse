@@ -10,6 +10,9 @@ import (
 
 func Routes(router *gin.Engine) {
 	router.Use(static.Serve("/", static.LocalFile("./client/build", true)))
+	router.Use(static.Serve("/facemasks", static.LocalFile("./client/build", true)))
+	router.Use(static.Serve("/gloves", static.LocalFile("./client/build", true)))
+	router.Use(static.Serve("/beanies", static.LocalFile("./client/build", true)))
 	router.NoRoute(notFound)
 	api := router.Group("/api")
 	{

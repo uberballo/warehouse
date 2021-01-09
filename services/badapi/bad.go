@@ -22,6 +22,18 @@ func createURL(baseURL, firstSuffix, secondSuffix string) string {
 	return result
 }
 
+func handleAvailabilityResponse(resp http.Response) (*AvailabilityResponse, error) {
+	var availability AvailabilityResponse
+	if resp.StatusCode == http.StatusOK {
+		err := json.NewDecoder(resp.Body).Decode(&availability)
+		if err != nil {
+			return nil, err
+		}
+		return &availability, nil
+	}
+	return nil, fmt.Errorf("Received status code %d", resp.StatusCode)
+}
+
 func fetchAvailability(manufacturer string, ch chan<- Response) {
 	retryCount := 0
 	url := createURL(baseURL, "availability", manufacturer)
@@ -32,25 +44,24 @@ func fetchAvailability(manufacturer string, ch chan<- Response) {
 	}
 	defer resp.Body.Close()
 
-	var availability AvailabilityResponse
-	if resp.StatusCode == http.StatusOK {
-		err := json.NewDecoder(resp.Body).Decode(&availability)
-		if err != nil || len(availability.Response) == 0 {
-			retryCount++
-			if retryCount > 5 {
-				fmt.Println(err)
-				ch <- Response{
-					err:    fmt.Errorf("Failed to fetch %s availability", manufacturer),
-					Result: nil,
-				}
+	availability, err := handleAvailabilityResponse(*resp)
+	if err != nil {
+		retryCount++
+		if retryCount > 5 {
+			fmt.Println(err)
+			ch <- Response{
+				err:    fmt.Errorf("Failed to fetch %s availability", manufacturer),
+				Result: nil,
 			}
-			go fetchAvailability(manufacturer, ch)
 		}
+		go fetchAvailability(manufacturer, ch)
+		return
 
-		ch <- Response{
-			err:    nil,
-			Result: availability}
 	}
+
+	ch <- Response{
+		err:    nil,
+		Result: *availability}
 
 }
 
@@ -87,14 +98,14 @@ func fetchProducts(category string, ch chan<- Response) {
 			}
 		}
 		go fetchProducts(category, ch)
-	} else {
-
-		ch <- Response{
-			err: nil,
-			Result: ProductResponse{
-				Category: category,
-				Response: products}}
+		return
 	}
+
+	ch <- Response{
+		err: nil,
+		Result: ProductResponse{
+			Category: category,
+			Response: products}}
 
 }
 
@@ -118,9 +129,8 @@ func getAvailability(manufacturers []string) []AvailabilityResponse {
 	availabilityChannel := make(chan Response)
 	var result []AvailabilityResponse
 
-	for _, manu := range manufacturers {
-		fmt.Println(manu, len(manu))
-		go fetchAvailability(manu, availabilityChannel)
+	for _, manufacturer := range manufacturers {
+		go fetchAvailability(manufacturer, availabilityChannel)
 	}
 
 	for range manufacturers {
