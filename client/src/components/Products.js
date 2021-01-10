@@ -1,33 +1,32 @@
 import React, { forwardRef } from 'react'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeGrid as Grid } from 'react-window'
+import * as constants from '../constants'
 import useWindowSize from '../hooks/windowSize'
 import ProductCard from './ProductCard'
+import styled from 'styled-components'
 
 const Products = ({ products }) => {
   const windowSize = useWindowSize()
-  const GUTTER_SIZE = 5
-  const ROW_WIDTH = 250
-  const ROW_HEIGHT = 100
-  const COLUMN_COUNT = Math.floor(windowSize.width / ROW_WIDTH) || 0
-  const ROW_COUNT = Math.ceil(products?.length / COLUMN_COUNT) || 0
+  const columnCount = Math.floor(windowSize.width / constants.ROW_WIDTH) || 0
+  const rowCount = Math.ceil(products?.length / columnCount) || 0
+  const gutter_size = constants.GUTTER_SIZE
 
   const Cell = ({ columnIndex, rowIndex, style }) => {
-    const i = COLUMN_COUNT * rowIndex + columnIndex
-    const pro = products[i]
-    if (pro) {
+    const index = columnCount * rowIndex + columnIndex
+    const product = products[index]
+
+    if (product) {
       return (
         <div
           className={'GridItem'}
           style={{
             ...style,
-            left: style.left + GUTTER_SIZE,
-            top: style.top + GUTTER_SIZE,
-            width: style.width - GUTTER_SIZE,
-            height: style.height - GUTTER_SIZE,
+            left: style.left + gutter_size,
+            top: style.top + gutter_size,
           }}
         >
-          <ProductCard pro={pro} />
+          <ProductCard pro={product} />
         </div>
       )
     } else {
@@ -35,34 +34,29 @@ const Products = ({ products }) => {
     }
   }
 
-  const innerElementType = forwardRef(({ style, ...rest }, ref) => (
-    <div
-      ref={ref}
-      style={{
-        ...style,
-        paddingLeft: GUTTER_SIZE,
-      }}
-      {...rest}
-    />
-  ))
+  //This height is required for the autosizer.
+  const StyledProducts = styled.div`
+    height: 97vh;
+  `
+  const style = {}
   return (
-    <div className='Container' style={{ flex: '1 1 auto', height: '100vh' }}>
-      <AutoSizer>
+    <StyledProducts>
+      <AutoSizer style={style}>
         {({ height, width }) => (
           <Grid
-            columnCount={COLUMN_COUNT}
-            columnWidth={ROW_WIDTH}
+            columnCount={columnCount}
+            columnWidth={constants.ROW_WIDTH}
             height={height}
-            innerElementType={innerElementType}
-            rowCount={ROW_COUNT}
-            rowHeight={ROW_HEIGHT}
+            rowCount={rowCount}
+            rowHeight={constants.ROW_HEIGHT}
             width={width}
+            style={style}
           >
             {Cell}
           </Grid>
         )}
       </AutoSizer>
-    </div>
+    </StyledProducts>
   )
 }
 

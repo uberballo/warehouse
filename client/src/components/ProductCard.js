@@ -1,11 +1,22 @@
 import React from 'react'
-  const ProductCard = ({ pro }) => {
-    return (
-      <div className="Product">
-        <p> {pro.Name} </p>
-        <p> {pro.Stock} </p>
-      </div>
-    );
-  };
+import styled from 'styled-components'
 
-  export default ProductCard
+const StyledProductCard = styled.div`
+  padding: 5px;
+  margin: 5px;
+  border-style: groove;
+`
+
+const ProductCard = ({ pro }) => {
+  return (
+    <StyledProductCard>
+      <p> {pro.Name} </p>
+      <p> {pro.Manufacturer} </p>
+      <p> {pro.Color}</p>
+      <p> {pro.Price}</p>
+      <p> {pro.Stock} </p>
+    </StyledProductCard>
+  )
+}
+
+export default ProductCard

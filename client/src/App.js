@@ -1,24 +1,20 @@
-import './App.css'
 import {
   BrowserRouter as Router,
   Redirect,
   Route,
   Switch,
 } from 'react-router-dom'
-import Container from './components/Container'
+import ProductContainer from './components/ProductContainer'
+import NavBar from './components/NavBar'
 
 const App = () => {
   return (
     <div className='App'>
-      <div className='Navbar'>
-        <a href='/facemasks'>face masks</a>
-        <a href='/gloves'>gloves</a>
-        <a href='/beanies'>beanies</a>
-      </div>
+      <NavBar />
       <Router>
         <Switch>
           <Route path='/:category'>
-            <Container />
+            <ProductContainer />
           </Route>
         </Switch>
         <Route exact path='/'>
