@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React from 'react'
 import AutoSizer from 'react-virtualized-auto-sizer'
 import { FixedSizeGrid as Grid } from 'react-window'
 import * as constants from '../constants'
@@ -16,22 +16,22 @@ const Products = ({ products }) => {
     const index = columnCount * rowIndex + columnIndex
     const product = products[index]
 
-    if (product) {
-      return (
-        <div
-          className={'GridItem'}
-          style={{
-            ...style,
-            left: style.left + gutter_size,
-            top: style.top + gutter_size,
-          }}
-        >
-          <ProductCard pro={product} />
-        </div>
-      )
-    } else {
+    if (!product) {
       return <div style={style}>Loading...</div>
     }
+
+    return (
+      <div
+        className={'GridItem'}
+        style={{
+          ...style,
+          left: style.left + gutter_size,
+          top: style.top + gutter_size,
+        }}
+      >
+        <ProductCard pro={product} />
+      </div>
+    )
   }
 
   //This height is required for the autosizer.

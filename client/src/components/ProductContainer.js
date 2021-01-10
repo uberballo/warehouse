@@ -8,7 +8,11 @@ import Products from './Products'
 
 const StyledProductContainer = styled.div`
   text-align: center;
-  justify-content: center;
+`
+
+const StyledLoadingErrorContainer = styled.div`
+  text-align: center;
+  padding: 70px 0;
 `
 
 const ProductContainer = () => {
@@ -17,8 +21,14 @@ const ProductContainer = () => {
     refreshInterval: constants.REFRESH_INTERVAL_IN_MS,
   })
 
-  if (error) return <div>failed to load</div>
-  if (!data) return <div>loading...</div>
+  if (error)
+    return (
+      <StyledLoadingErrorContainer>
+        Failed to load products
+      </StyledLoadingErrorContainer>
+    )
+  if (!data)
+    return <StyledLoadingErrorContainer>Loading</StyledLoadingErrorContainer>
 
   return (
     <StyledProductContainer>
