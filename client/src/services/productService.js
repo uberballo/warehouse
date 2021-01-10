@@ -1,11 +1,11 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const baseUrl = '/api/products/';
+const baseUrl = '/api/products/'
 
 const getProducts = async (category) => {
-    const res = await axios.get(`${baseUrl}${category}`);
-    console.log(res);
-    return res.data;
-};
+  const res = await axios.get(`${baseUrl}${category}`)
+  console.log(res.data)
+  return res.data
+}
 
-export default getProducts;
+export default getProducts
