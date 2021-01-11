@@ -5,8 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-co-op/gocron"
-	"github.com/uberballo/webstore/routes"
-	"github.com/uberballo/webstore/services/product"
+	"github.com/uberballo/warehouse/server/routes"
+	"github.com/uberballo/warehouse/server/services/product"
 )
 
 func Start() {

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/uberballo/webstore/server"
+	"github.com/uberballo/warehouse/server/server"
 )
 
 func main() {

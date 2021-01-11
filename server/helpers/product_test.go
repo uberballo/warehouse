@@ -5,9 +5,8 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/uberballo/webstore/test/mock_service"
-
-	. "github.com/uberballo/webstore/model"
+	. "github.com/uberballo/warehouse/server/model"
+	"github.com/uberballo/warehouse/server/test/mock_service"
 )
 
 func getCorrectProducts() []Product {

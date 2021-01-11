@@ -6,7 +6,7 @@ const getProducts = async (category) => {
   const res = await axios.get(`${baseUrl}${category}`)
   console.log(res.data)
   if (res.status === 200) {
-    return res.data
+    return res.data.products
   }
 }
 

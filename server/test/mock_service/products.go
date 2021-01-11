@@ -1,7 +1,7 @@
 package mock_service
 
 import (
-	. "github.com/uberballo/webstore/model"
+	. "github.com/uberballo/warehouse/server/model"
 )
 
 func MockProductResponse() ProductResponse {

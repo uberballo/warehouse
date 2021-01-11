@@ -28,4 +28,10 @@ type ProductResponse struct {
 	Response []ProductWithoutStock
 }
 
+type BadAPiResponse struct {
+	ProductResponses      []ProductResponse
+	AvailabilityResponses []AvailabilityResponse
+	AvailabilityErrors    []string
+}
+
 type ByName []Product

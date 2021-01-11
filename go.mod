@@ -1,4 +1,4 @@
-module github.com/uberballo/webstore
+module github.com/uberballo/warehouse
 
 go 1.15
 

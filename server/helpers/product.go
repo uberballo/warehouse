@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"strings"
 
-	m "github.com/uberballo/webstore/model"
-	"github.com/uberballo/webstore/test/mock_service"
+	m "github.com/uberballo/warehouse/server/model"
+	"github.com/uberballo/warehouse/server/test/mock_service"
 )
 
 var availabilityMap map[string]string

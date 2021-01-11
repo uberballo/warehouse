@@ -5,14 +5,14 @@ import (
 
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
-	v1 "github.com/uberballo/webstore/routes/v1"
+	v1 "github.com/uberballo/warehouse/server/routes/v1"
 )
 
 func Routes(router *gin.Engine) {
-	router.Use(static.Serve("/", static.LocalFile("./client/build", true)))
-	router.Use(static.Serve("/facemasks", static.LocalFile("./client/build", true)))
-	router.Use(static.Serve("/gloves", static.LocalFile("./client/build", true)))
-	router.Use(static.Serve("/beanies", static.LocalFile("./client/build", true)))
+	router.Use(static.Serve("/", static.LocalFile("./web", true)))
+	router.Use(static.Serve("/facemasks", static.LocalFile("./web", true)))
+	router.Use(static.Serve("/gloves", static.LocalFile("./web", true)))
+	router.Use(static.Serve("/beanies", static.LocalFile("./web", true)))
 	router.NoRoute(notFound)
 	api := router.Group("/api")
 	{
