@@ -16,5 +16,5 @@ func Start() {
 	s1.Every(5).Minutes().Do(product.InitializeProductData)
 	s1.StartAsync()
 	// Start and run the server
-	router.Run(":5000")
+	router.Run()
 }
