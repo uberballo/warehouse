@@ -22,10 +22,11 @@ func getCategorysProducts(category string) []m.Product {
 //InitializeProductData initializes the products with data from Bad api
 func InitializeProductData() {
 	badAPIResponse := badapi.GetProductsAndAvailability(categories)
-	ar := m.CombineAvailabilityResponses(badAPIResponse.AvailabilityResponses)
-	for _, response := range badAPIResponse.ProductResponses {
-		combined := helpers.UpdateProductsWithAvailability(response, ar)
-		products[response.Category] = combined
+
+	availabilityResponse := m.CombineAvailabilityResponses(badAPIResponse.AvailabilityResponses)
+	for _, productResponse := range badAPIResponse.ProductResponses {
+		combined := helpers.UpdateProductsWithAvailability(productResponse, availabilityResponse)
+		products[productResponse.Category] = combined
 	}
 }
 

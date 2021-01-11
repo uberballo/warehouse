@@ -178,6 +178,11 @@ func createSliceOfManufacturers(m map[string]bool) []string {
 	return result
 }
 
+func GetProducts(categories []string) []ProductResponse {
+	productResponse := getProductsWithoutStock(categories)
+	return productResponse
+}
+
 //GetProductsAndAvailability fetches each categories products and availabilities from the Bad api.
 func GetProductsAndAvailability(categories []string) BadAPiResponse {
 	start := time.Now()
