@@ -6,12 +6,12 @@ import (
 	"testing"
 
 	. "github.com/uberballo/warehouse/server/model"
-	"github.com/uberballo/warehouse/server/test/mock_service"
+	"github.com/uberballo/warehouse/server/test/mockservice"
 )
 
 func getCorrectProducts() []Product {
 	var correctProducts = []Product{
-		Product{
+		{
 			ProductWithoutStock: ProductWithoutStock{
 				Id:           "ae8c8ad79a3e4a554d6f2",
 				Type:         "beanies",
@@ -22,7 +22,7 @@ func getCorrectProducts() []Product {
 			},
 			Stock: "OUTOFSTOCK",
 		},
-		Product{
+		{
 			ProductWithoutStock: ProductWithoutStock{
 				Id:           "3af7caee9be9365e49e93576",
 				Type:         "beanies",
@@ -32,7 +32,7 @@ func getCorrectProducts() []Product {
 				Manufacturer: "ippal"},
 			Stock: "INSTOCK",
 		},
-		Product{
+		{
 			ProductWithoutStock: ProductWithoutStock{
 				Id:           "BadID123",
 				Type:         "beanies",
@@ -56,7 +56,7 @@ func getCorrectAvailabilityMap() map[string]string {
 }
 func TestCreateAvailabilityMapCreatesCorrectMap(t *testing.T) {
 	want := getCorrectAvailabilityMap()
-	availabilityResponse := mock_service.MockAvailabilityResponse().Response
+	availabilityResponse := mockservice.MockAvailabilityResponse().Response
 	got := createAvailabilityMap(availabilityResponse)
 
 	if !reflect.DeepEqual(got, want) {
@@ -65,7 +65,7 @@ func TestCreateAvailabilityMapCreatesCorrectMap(t *testing.T) {
 }
 
 func TestAvailability(t *testing.T) {
-	productResponse := mock_service.MockProductResponse().Response
+	productResponse := mockservice.MockProductResponse().Response
 	want := getCorrectProducts()
 	availabilityMap := getCorrectAvailabilityMap()
 	got := createProductsWithAvailability(availabilityMap, productResponse)

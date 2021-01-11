@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	m "github.com/uberballo/warehouse/server/model"
-	"github.com/uberballo/warehouse/server/test/mock_service"
+	"github.com/uberballo/warehouse/server/test/mockservice"
 )
 
 var availabilityMap map[string]string
@@ -19,7 +19,7 @@ func getAvailabilityMap() map[string]string {
 }
 
 func setAvailabilityMapTemp() {
-	availabilityResponse := mock_service.MockAvailabilityResponse()
+	availabilityResponse := mockservice.MockAvailabilityResponse()
 	availabilityMap = createAvailabilityMap(availabilityResponse.Response)
 }
 
@@ -52,6 +52,7 @@ func createProductsWithAvailability(availabilityMap map[string]string, products 
 	return result
 }
 
+//UpdateProductsWithAvailability adds availability to product
 func UpdateProductsWithAvailability(productResponse m.ProductResponse, availabilityResponse m.AvailabilityResponse) []m.Product {
 	availabilityMap := createAvailabilityMap(availabilityResponse.Response)
 	products := createProductsWithAvailability(availabilityMap, productResponse.Response)

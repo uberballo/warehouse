@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//GetProducts fetches data and sends json with product data
 func GetProducts(c *gin.Context) {
 	category := c.Param("category")
 	fmt.Println(category)

@@ -1,14 +1,15 @@
-package mock_service
+package mockservice
 
 import (
 	. "github.com/uberballo/warehouse/server/model"
 )
 
+//MockProductResponse returns a correct ProductResponse mock
 func MockProductResponse() ProductResponse {
 	return ProductResponse{
 		Category: "beanies",
 		Response: []ProductWithoutStock{
-			ProductWithoutStock{
+			{
 				Id:           "ae8c8ad79a3e4a554d6f2",
 				Type:         "beanies",
 				Name:         "SOPREV STAR",
@@ -16,7 +17,7 @@ func MockProductResponse() ProductResponse {
 				Price:        55,
 				Manufacturer: "umpante",
 			},
-			ProductWithoutStock{
+			{
 				Id:           "3af7caee9be9365e49e93576",
 				Type:         "beanies",
 				Name:         "STAR EARTH",
@@ -24,7 +25,7 @@ func MockProductResponse() ProductResponse {
 				Price:        80,
 				Manufacturer: "ippal",
 			},
-			ProductWithoutStock{
+			{
 				Id:           "BadID123",
 				Type:         "beanies",
 				Name:         "STAR EARTH",

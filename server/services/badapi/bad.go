@@ -93,30 +93,22 @@ func handleProductResponse(resp http.Response) ([]ProductWithoutStock, error) {
 	return nil, fmt.Errorf("Received status code %d", resp.StatusCode)
 }
 
-func fetchProducts(category string, ch chan<- response) {
-	retryCount := 0
+func fetchProducts(category string, retryCount int, ch chan<- response) {
 	url := apihelper.CreateURL(baseURL, "products", category)
-
 	resp, err := c.Get(url)
 
 	if err != nil {
-		ch <- response{
-			err:    fmt.Errorf("Error occurred during GET %s", err),
-			Result: nil,
-		}
+		err := fmt.Errorf("Error occurred during GET %s", err)
+		retry(fetchProducts, category, retryCount, ch, err)
+		return
 	}
 	defer resp.Body.Close()
 
 	products, err := handleProductResponse(*resp)
+
 	if err != nil {
-		retryCount++
-		if retryCount > 3 {
-			ch <- response{
-				err:    fmt.Errorf("Failed to fetch %s catalog ", category),
-				Result: nil,
-			}
-		}
-		go fetchProducts(category, ch)
+		err := fmt.Errorf("Failed to fetch %s's after %d tries", category, retryCount)
+		retry(fetchProducts, category, retryCount, ch, err)
 		return
 	}
 
@@ -134,11 +126,14 @@ func getProductsWithoutStock(categories []string) []ProductResponse {
 	var result []ProductResponse
 
 	for _, item := range categories {
-		go fetchProducts(item, productChannel)
+		go fetchProducts(item, 0, productChannel)
 	}
 
 	for range categories {
 		res := <-productChannel
+		if res.err != nil {
+			fmt.Println(res.err)
+		}
 		result = append(result, res.Result.(ProductResponse))
 	}
 
@@ -183,6 +178,7 @@ func createSliceOfManufacturers(m map[string]bool) []string {
 	return result
 }
 
+//GetProductsAndAvailability fetches each categories products and availabilities from the Bad api.
 func GetProductsAndAvailability(categories []string) BadAPiResponse {
 	start := time.Now()
 

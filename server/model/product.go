@@ -1,5 +1,6 @@
 package model
 
+//CombineProductResponses combines slice of multiple ProductResponse to single ProductResponse
 func CombineProductResponses(productResponse []ProductResponse) ProductResponse {
 	responses := []ProductWithoutStock{}
 	for _, pr := range productResponse {
@@ -8,7 +9,8 @@ func CombineProductResponses(productResponse []ProductResponse) ProductResponse 
 	return ProductResponse{Response: responses}
 }
 
-func CombinAvailabilityResponses(availabilityResponse []AvailabilityResponse) AvailabilityResponse {
+//CombineAvailabilityResponses combines slice of multiple AvailabilityResponses into single AvailabilityResponse
+func CombineAvailabilityResponses(availabilityResponse []AvailabilityResponse) AvailabilityResponse {
 	responses := []Availability{}
 	for _, pr := range availabilityResponse {
 		responses = append(responses, pr.Response...)
