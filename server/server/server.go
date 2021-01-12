@@ -19,5 +19,5 @@ func Start() {
 	s1.StartAsync()
 
 	// Start and run the server
-	router.Run(":8080")
+	router.Run()
 }
