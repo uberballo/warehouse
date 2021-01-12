@@ -27,6 +27,7 @@ const ProductContainer = () => {
         Failed to load products
       </StyledLoadingErrorContainer>
     )
+    
   if (!data)
     return <StyledLoadingErrorContainer>Loading</StyledLoadingErrorContainer>
 
