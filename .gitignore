@@ -2,3 +2,4 @@ testi.txt
 node_modules/
 build/
 .eslintcache
+requests.http
