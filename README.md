@@ -34,7 +34,7 @@ Run Server tests by running the following in the `server` folder:
 Build the image:  
 `docker build -t warehouse .`  
  
-Run the image: 
+Run the image:  
 `docker run -p 3000:8080 warehouse`  
 
 ### 3.5. Access the application locally
