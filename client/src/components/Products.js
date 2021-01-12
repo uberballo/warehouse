@@ -8,17 +8,13 @@ import styled from 'styled-components'
 
 const Products = ({ products }) => {
   const windowSize = useWindowSize()
-  const columnCount = Math.floor(windowSize.width / constants.ROW_WIDTH) || 0
-  const rowCount = Math.ceil(products?.length / columnCount) || 0
+  const columnCount = Math.floor(windowSize.width / constants.ROW_WIDTH)
+  const rowCount = products ? Math.ceil(products.length / columnCount) : 0
   const gutter_size = constants.GUTTER_SIZE
 
-  const Cell = ({ columnIndex, rowIndex, style }) => {
+  const cell = ({ columnIndex, rowIndex, style }) => {
     const index = columnCount * rowIndex + columnIndex
     const product = products[index]
-
-    if (!product) {
-      return <div style={style}>Loading...</div>
-    }
 
     return (
       <div
@@ -52,7 +48,7 @@ const Products = ({ products }) => {
             width={width}
             style={style}
           >
-            {Cell}
+            {cell}
           </Grid>
         )}
       </AutoSizer>

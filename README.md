@@ -46,7 +46,7 @@ Access the service from:
 
 ### 4.1. Access  
 The application is running on Heroku:  
-[Application on Heroku](http://localhost:3000/beanies)  
+[Application on Heroku](https://cool-smooth-warehouse.herokuapp.com/facemasks)  
 If the service hasn't been in use for some time, Heroku has to spin up the application and this process may take some time. After the application starts, It will first fetch the product data without availability and updates them with the availability after some time.  
 
 ## 5. Continuous integration  
