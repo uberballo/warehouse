@@ -4,6 +4,7 @@ import { FixedSizeGrid as Grid } from 'react-window'
 import * as constants from '../constants'
 import useWindowSize from '../hooks/windowSize'
 import ProductCard from './ProductCard'
+import EmptyCell from './common/EmptyCell'
 import styled from 'styled-components'
 
 const Products = ({ products }) => {
@@ -15,6 +16,10 @@ const Products = ({ products }) => {
   const cell = ({ columnIndex, rowIndex, style }) => {
     const index = columnCount * rowIndex + columnIndex
     const product = products[index]
+
+    if (!product) {
+      return <EmptyCell />
+    }
 
     return (
       <div
