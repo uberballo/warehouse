@@ -1,7 +1,8 @@
 package model
 
+//Availability of a certain product
 type Availability struct {
-	Id          string
+	ID          string //Product ID
 	Datapayload string
 }
 
@@ -10,7 +11,7 @@ type AvailabilityResponse struct {
 }
 
 type ProductWithoutStock struct {
-	Id           string
+	ID           string
 	Type         string
 	Name         string
 	Color        []string

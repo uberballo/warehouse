@@ -26,13 +26,17 @@ func setAvailabilityMapTemp() {
 func getInStockValue(payload string) string {
 	expression := "<INSTOCKVALUE>(.+)?</INSTOCKVALUE>"
 	re := regexp.MustCompile(expression)
-	return re.FindStringSubmatch(payload)[1]
+	found := re.FindStringSubmatch(payload)
+	if len(found) > 1 {
+		return found[1]
+	}
+	return payload
 }
 
 func createAvailabilityMap(Availabilities []m.Availability) map[string]string {
 	result := make(map[string]string)
 	for _, availability := range Availabilities {
-		key := strings.ToLower(availability.Id)
+		key := strings.ToLower(availability.ID)
 		value := getInStockValue(availability.Datapayload)
 		result[key] = value
 	}
@@ -42,7 +46,7 @@ func createAvailabilityMap(Availabilities []m.Availability) map[string]string {
 func createProductsWithAvailability(availabilityMap map[string]string, products []m.ProductWithoutStock) []m.Product {
 	result := []m.Product{}
 	for _, product := range products {
-		stockInValue := availabilityMap[product.Id]
+		stockInValue := availabilityMap[product.ID]
 		productWithStock := m.Product{
 			ProductWithoutStock: product,
 			Stock:               stockInValue,
