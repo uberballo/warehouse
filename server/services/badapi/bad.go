@@ -184,7 +184,7 @@ func GetProducts(categories []string) []ProductResponse {
 }
 
 //GetProductsAndAvailability fetches each categories products and availabilities from the Bad api.
-func GetProductsAndAvailability(categories []string) BadAPiResponse {
+func GetProductsAndAvailability(categories []string) BadAPIResponse {
 	start := time.Now()
 
 	productResponse := getProductsWithoutStock(categories)
@@ -192,7 +192,7 @@ func GetProductsAndAvailability(categories []string) BadAPiResponse {
 	availabilityResponse := getAvailability(manufacturers)
 
 	fmt.Printf("%.2fs elapsed\n", time.Since(start).Seconds())
-	resp := BadAPiResponse{
+	resp := BadAPIResponse{
 		ProductResponses:      productResponse,
 		AvailabilityResponses: availabilityResponse,
 	}

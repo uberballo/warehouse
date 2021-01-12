@@ -77,9 +77,9 @@ func TestAvailability(t *testing.T) {
 
 func TestProductSorting(t *testing.T) {
 	var got = []Product{
-		Product{
+		{
 			ProductWithoutStock: ProductWithoutStock{
-				Id:           "3af7caee9be9365e49e93576",
+				ID:           "3af7caee9be9365e49e93576",
 				Type:         "beanies",
 				Name:         "STAR EARTH",
 				Color:        []string{"green"},
@@ -87,9 +87,9 @@ func TestProductSorting(t *testing.T) {
 				Manufacturer: "ippal"},
 			Stock: "INSTOCK",
 		},
-		Product{
+		{
 			ProductWithoutStock: ProductWithoutStock{
-				Id:           "ae8c8ad79a3e4a554d6f2",
+				ID:           "ae8c8ad79a3e4a554d6f2",
 				Type:         "beanies",
 				Name:         "SOPREV STAR",
 				Color:        []string{"purple"},
@@ -98,9 +98,9 @@ func TestProductSorting(t *testing.T) {
 			},
 			Stock: "OUTOFSTOCK",
 		},
-		Product{
+		{
 			ProductWithoutStock: ProductWithoutStock{
-				Id:           "BadID123",
+				ID:           "BadID123",
 				Type:         "beanies",
 				Name:         "STAR EARTH",
 				Color:        []string{"green"},
