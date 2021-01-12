@@ -1,3 +1,4 @@
 testi.txt
 node_modules/
 build/
+.eslintcache
