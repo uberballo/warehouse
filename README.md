@@ -46,7 +46,7 @@ Access the service from:
 
 ### 4.1. Access  
 The application is running on Heroku:  
-[Application on Heroku](http://localhost:3000/beanies)  
+[Application on Heroku](https://cool-smooth-warehouse.herokuapp.com/)  
 The service takes some time to start, as it fetches the data from the bad api.
 
 ## 5. Continuous integration  
