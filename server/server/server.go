@@ -14,9 +14,9 @@ func Start() {
 	router := gin.Default()
 	routes.Routes(router)
 
-	s1 := gocron.NewScheduler(time.UTC)
-	s1.Every(5).Minutes().Do(product.InitializeProductData)
-	s1.StartAsync()
+	scheduler := gocron.NewScheduler(time.UTC)
+	scheduler.Every(5).Minutes().Do(product.InitializeProductData)
+	scheduler.StartAsync()
 
 	// Start and run the server
 	router.Run()

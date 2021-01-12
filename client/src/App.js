@@ -10,8 +10,8 @@ import NavBar from './components/NavBar'
 const App = () => {
   return (
     <div className='App'>
-      <NavBar />
       <Router>
+        <NavBar />
         <Switch>
           <Route path='/:category'>
             <ProductContainer />

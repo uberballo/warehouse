@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 const StyledNavBar = styled.div`
   display: flex;
@@ -17,9 +18,9 @@ const StyledNavBar = styled.div`
 const NavBar = () => {
   return (
     <StyledNavBar>
-      <a href='/facemasks'>face masks</a>
-      <a href='/gloves'>gloves</a>
-      <a href='/beanies'>beanies</a>
+      <Link to='/facemasks'>face masks</Link>
+      <Link to='/gloves'>gloves</Link>
+      <Link to='/beanies'>beanies</Link>
     </StyledNavBar>
   )
 }
