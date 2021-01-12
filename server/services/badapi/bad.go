@@ -31,7 +31,6 @@ func retry(f fn, param string, retryCount int, ch chan<- response, err error) {
 		}
 		return
 	}
-
 	f(param, retryCount, ch)
 }
 
@@ -54,7 +53,7 @@ func makeRequest(url string) (*http.Response, error) {
 	return resp, nil
 }
 
-func handleAvailabilityResponse(resp http.Response) (*AvailabilityResponse, error) {
+func decodeAvailabilityResponse(resp http.Response) (*AvailabilityResponse, error) {
 	var availability AvailabilityResponse
 	if resp.StatusCode == http.StatusOK {
 		err := json.NewDecoder(resp.Body).Decode(&availability)
@@ -66,7 +65,7 @@ func handleAvailabilityResponse(resp http.Response) (*AvailabilityResponse, erro
 	return nil, fmt.Errorf("Received status code %d", resp.StatusCode)
 }
 
-func fetchAvailability(manufacturer string, retryCount int, ch chan<- response) {
+func fetchAvailabilityData(manufacturer string, retryCount int, ch chan<- response) {
 	url := apihelper.CreateURL(baseURL, "availability", manufacturer)
 	resp, err := makeRequest(url)
 	if err != nil {
@@ -77,10 +76,10 @@ func fetchAvailability(manufacturer string, retryCount int, ch chan<- response) 
 	}
 	defer resp.Body.Close()
 
-	availability, err := handleAvailabilityResponse(*resp)
+	availability, err := decodeAvailabilityResponse(*resp)
 	if err != nil {
 		err := fmt.Errorf("Failed to fetch %s's availability after %d tries", manufacturer, retryCount)
-		retry(fetchAvailability, manufacturer, retryCount, ch, err)
+		retry(fetchAvailabilityData, manufacturer, retryCount, ch, err)
 		return
 	}
 
@@ -88,10 +87,9 @@ func fetchAvailability(manufacturer string, retryCount int, ch chan<- response) 
 		err:    nil,
 		Result: *availability,
 	}
-
 }
 
-func handleProductResponse(resp http.Response) ([]ProductWithoutStock, error) {
+func decodeProductResponse(resp http.Response) ([]ProductWithoutStock, error) {
 	var products []ProductWithoutStock
 	if resp.StatusCode == http.StatusOK {
 		err := json.NewDecoder(resp.Body).Decode(&products)
@@ -103,7 +101,7 @@ func handleProductResponse(resp http.Response) ([]ProductWithoutStock, error) {
 	return nil, fmt.Errorf("Received status code %d", resp.StatusCode)
 }
 
-func fetchProducts(category string, retryCount int, ch chan<- response) {
+func fetchProductsData(category string, retryCount int, ch chan<- response) {
 	url := apihelper.CreateURL(baseURL, "products", category)
 	resp, err := makeRequest(url)
 	if err != nil {
@@ -114,11 +112,10 @@ func fetchProducts(category string, retryCount int, ch chan<- response) {
 	}
 	defer resp.Body.Close()
 
-	products, err := handleProductResponse(*resp)
-
+	products, err := decodeProductResponse(*resp)
 	if err != nil {
 		err := fmt.Errorf("Failed to fetch %s's after %d tries", category, retryCount)
-		retry(fetchProducts, category, retryCount, ch, err)
+		retry(fetchProductsData, category, retryCount, ch, err)
 		return
 	}
 
@@ -128,7 +125,6 @@ func fetchProducts(category string, retryCount int, ch chan<- response) {
 			Category: category,
 			Response: products},
 	}
-
 }
 
 func getProductsWithoutStock(categories []string) []ProductResponse {
@@ -136,7 +132,7 @@ func getProductsWithoutStock(categories []string) []ProductResponse {
 	var result []ProductResponse
 
 	for _, item := range categories {
-		go fetchProducts(item, 0, productChannel)
+		go fetchProductsData(item, 0, productChannel)
 	}
 
 	for range categories {
@@ -155,7 +151,7 @@ func getAvailability(manufacturers []string) []AvailabilityResponse {
 	var result []AvailabilityResponse
 
 	for _, manufacturer := range manufacturers {
-		go fetchAvailability(manufacturer, 0, availabilityChannel)
+		go fetchAvailabilityData(manufacturer, 0, availabilityChannel)
 	}
 
 	for range manufacturers {

@@ -8,6 +8,7 @@ import (
 	v1 "github.com/uberballo/warehouse/server/routes/v1"
 )
 
+//Routes adds routes to basic funtionality
 func Routes(router *gin.Engine) {
 	router.Use(static.Serve("/", static.LocalFile("./web", true)))
 	router.Use(static.Serve("/facemasks", static.LocalFile("./web", true)))
