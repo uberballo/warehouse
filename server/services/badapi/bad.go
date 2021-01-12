@@ -42,8 +42,6 @@ func makeRequest(url string) (*http.Response, error) {
 		return nil, err
 	}
 
-	//If you want to test the product if error-mode, uncomment the line.
-	//req.Header.Set("x-force-error-mode", "all")
 	resp, err := c.Do(req)
 	if err != nil {
 		fmt.Println(err)
