@@ -35,6 +35,25 @@ func retry(f fn, param string, retryCount int, ch chan<- response, err error) {
 	f(param, retryCount, ch)
 }
 
+func makeRequest(url string) (*http.Response, error) {
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		err := errors.New("Error occurred creating new request")
+		fmt.Println((err))
+		return nil, err
+	}
+
+	//If you want to test the product if error-mode, uncomment the line.
+	//req.Header.Set("x-force-error-mode", "all")
+	resp, err := c.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	return resp, nil
+}
+
 func handleAvailabilityResponse(resp http.Response) (*AvailabilityResponse, error) {
 	var availability AvailabilityResponse
 	if resp.StatusCode == http.StatusOK {
@@ -49,27 +68,18 @@ func handleAvailabilityResponse(resp http.Response) (*AvailabilityResponse, erro
 
 func fetchAvailability(manufacturer string, retryCount int, ch chan<- response) {
 	url := apihelper.CreateURL(baseURL, "availability", manufacturer)
-	req, err := http.NewRequest("GET", url, nil)
+	resp, err := makeRequest(url)
 	if err != nil {
-		err := errors.New("Error occurred creating new request")
-		fmt.Println((err))
-		return
-	}
-
-	//If you want to test the product if error-mode, uncomment the line.
-	//req.Header.Set("x-force-error-mode", "all")
-	resp, err := c.Do(req)
-
-	if err != nil {
-		err := fmt.Errorf("Error occurred during GET %s", err)
-		retry(fetchAvailability, manufacturer, retryCount, ch, err)
-		return
+		ch <- response{
+			err:    err,
+			Result: nil,
+		}
 	}
 	defer resp.Body.Close()
 
 	availability, err := handleAvailabilityResponse(*resp)
 	if err != nil {
-		err := fmt.Errorf("Failed to fetch %s availability after %d tries", manufacturer, retryCount)
+		err := fmt.Errorf("Failed to fetch %s's availability after %d tries", manufacturer, retryCount)
 		retry(fetchAvailability, manufacturer, retryCount, ch, err)
 		return
 	}
@@ -95,12 +105,12 @@ func handleProductResponse(resp http.Response) ([]ProductWithoutStock, error) {
 
 func fetchProducts(category string, retryCount int, ch chan<- response) {
 	url := apihelper.CreateURL(baseURL, "products", category)
-	resp, err := c.Get(url)
-
+	resp, err := makeRequest(url)
 	if err != nil {
-		err := fmt.Errorf("Error occurred during GET %s", err)
-		retry(fetchProducts, category, retryCount, ch, err)
-		return
+		ch <- response{
+			err:    err,
+			Result: nil,
+		}
 	}
 	defer resp.Body.Close()
 
@@ -178,6 +188,7 @@ func createSliceOfManufacturers(m map[string]bool) []string {
 	return result
 }
 
+//GetProducts returns products without availability
 func GetProducts(categories []string) []ProductResponse {
 	productResponse := getProductsWithoutStock(categories)
 	return productResponse

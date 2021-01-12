@@ -19,14 +19,26 @@ func getCategorysProducts(category string) []m.Product {
 	return products[category]
 }
 
+func init() {
+	setProductsWithoutAvailability()
+}
+
+func setProductsWithoutAvailability() {
+	productResponses := badapi.GetProducts(categories)
+	for _, response := range productResponses {
+		product := helpers.UpdateProductsWithAvailability(response, m.AvailabilityResponse{})
+		products[response.Category] = product
+	}
+}
+
 //InitializeProductData initializes the products with data from Bad api
 func InitializeProductData() {
 	badAPIResponse := badapi.GetProductsAndAvailability(categories)
 
 	availabilityResponse := m.CombineAvailabilityResponses(badAPIResponse.AvailabilityResponses)
 	for _, productResponse := range badAPIResponse.ProductResponses {
-		combined := helpers.UpdateProductsWithAvailability(productResponse, availabilityResponse)
-		products[productResponse.Category] = combined
+		updated := helpers.UpdateProductsWithAvailability(productResponse, availabilityResponse)
+		products[productResponse.Category] = updated
 	}
 }
 

@@ -9,12 +9,15 @@ import (
 	"github.com/uberballo/warehouse/server/services/product"
 )
 
+//Start begins fetching and serving bad api data
 func Start() {
 	router := gin.Default()
 	routes.Routes(router)
+
 	s1 := gocron.NewScheduler(time.UTC)
 	s1.Every(5).Minutes().Do(product.InitializeProductData)
 	s1.StartAsync()
+
 	// Start and run the server
 	router.Run(":8080")
 }
